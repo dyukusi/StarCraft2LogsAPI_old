@@ -25,6 +25,7 @@ public class DB {
             String url = "jdbc:mysql://" + this.serverName + "/" + this.databaseName;
             con = DriverManager.getConnection(url, this.userName, this.password);
             con.setAutoCommit(false);
+            con.setReadOnly(true);
             return con;
         } catch (SQLException e) {
             System.out.println("Connection Failed. : " + e.toString());

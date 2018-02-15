@@ -60,6 +60,9 @@ public class Search {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            con.close();
+            ps.close();
         }
 
         return "internal server error";
