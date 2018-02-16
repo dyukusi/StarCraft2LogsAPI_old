@@ -35,23 +35,16 @@ public class Search {
         @QueryParam("name") String name,
         @QueryParam("race") String race
     ) throws SQLException {
+        if (name == null || race == null) return "name and race parameter required.";
+
         Connection con = this.db.connect();
         StringBuilder sql = new StringBuilder();
 
-        sql.append("SELECT * FROM profile_log WHERE name LIKE ?");
-
-        if (race != null) {
-            sql.append(" AND race = ?");
-        }
-
-        sql.append(" ORDER BY last_played_at DESC LIMIT 10");
+        sql.append("SELECT * FROM profile_log WHERE name = ? AND race = ? ORDER BY last_played_at DESC, created_at DESC LIMIT 10;");
 
         PreparedStatement ps = con.prepareStatement(sql.toString());
-        ps.setString(1, "%" + name + "%");
-
-        if (race != null) {
-            ps.setString(2, race);
-        }
+        ps.setString(1, name);
+        ps.setString(2, race);
 
         try {
             ResultSet result = ps.executeQuery();
