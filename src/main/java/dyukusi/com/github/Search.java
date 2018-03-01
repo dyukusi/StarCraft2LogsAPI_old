@@ -32,19 +32,23 @@ public class Search {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String searchByDisplayName(
-        @QueryParam("name") String name,
-        @QueryParam("race") String race
+        @QueryParam("region") String region,
+        @QueryParam("name")   String name,
+        @QueryParam("race")   String race
     ) throws SQLException {
-        if (name == null || race == null) return "name and race parameter required.";
+        if (region == null || name == null || race == null) return "region, name and race parameter required.";
+        if (Region.valueOf(region) == null) return "invalid region";
 
         Connection con = this.db.connect();
         StringBuilder sql = new StringBuilder();
 
-        sql.append("SELECT * FROM profile_log WHERE name = ? AND race = ? ORDER BY last_played_at DESC, created_at DESC LIMIT 10;");
+        sql.append("SELECT * FROM profile_log WHERE region_id = ? AND name = ? AND race_id IN (?, ?) ORDER BY last_played_at DESC, created_at DESC LIMIT 10;");
 
         PreparedStatement ps = con.prepareStatement(sql.toString());
-        ps.setString(1, name);
-        ps.setString(2, race);
+        ps.setInt(1, Region.valueOf(region).getId());
+        ps.setString(2, name);
+        ps.setInt(3, Race.valueOf(race).getId());
+        ps.setInt(4, Race.Null.getId());
 
         try {
             ResultSet result = ps.executeQuery();
