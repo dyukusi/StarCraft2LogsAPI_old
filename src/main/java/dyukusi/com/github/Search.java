@@ -35,7 +35,7 @@ public class Search {
         @QueryParam("region") String region,
         @QueryParam("name")   String name,
         @QueryParam("race")   String race
-    ) throws SQLException {
+    ) throws SQLException, IOException {
         if (region == null || name == null || race == null) return "region, name and race parameter required.";
         if (Region.valueOf(region) == null) return "invalid region";
 
@@ -50,19 +50,8 @@ public class Search {
         ps.setInt(3, Race.valueOf(race).getId());
         ps.setInt(4, Race.Null.getId());
 
-        try {
-            ResultSet result = ps.executeQuery();
-            return createResponseJSONString(result);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            con.close();
-            ps.close();
-        }
-
-        return "internal server error";
+        ResultSet result = ps.executeQuery();
+        return createResponseJSONString(result);
     }
 
     private String createResponseJSONString(ResultSet result) throws SQLException, IOException {
@@ -90,7 +79,8 @@ public class Search {
                     case "VARCHAR":
                     case "TEXT":
                         String str = result.getString(column.getColumnName());
-                        if (str.equals("null")) {
+
+                        if (str == null) {
                             g.writeNull();
                         } else {
                             g.writeString(result.getString(column.getColumnName()));

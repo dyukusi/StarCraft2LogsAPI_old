@@ -22,7 +22,7 @@ public class DB {
 
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            String url = "jdbc:mysql://" + this.serverName + "/" + this.databaseName;
+            String url = "jdbc:mysql://" + this.serverName + "/" + this.databaseName + "?useSSL=false&requireSSL=false";
             con = DriverManager.getConnection(url, this.userName, this.password);
             con.setAutoCommit(false);
             con.setReadOnly(true);
