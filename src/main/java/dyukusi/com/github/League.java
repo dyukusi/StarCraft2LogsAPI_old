@@ -34,7 +34,7 @@ public class League {
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public String searchByDisplayName(
+    public String getLeagueInfo(
         @QueryParam("regionId") int regionId
     ) throws SQLException, IOException {
         Connection con = this.db.connect();
