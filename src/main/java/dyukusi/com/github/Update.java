@@ -33,13 +33,13 @@ public class Update {
     ) {
 
         try {
+            System.out.println(String.format(
+                    "Update request received. regionId: %d, profileId: %d, raceId %d",
+                    regionId, profileId, raceId
+            ));
+
             Connection con = this.db.connect();
-
-            StringBuilder sql = new StringBuilder();
-            sql.append("SELECT * FROM profile_log WHERE region_id = ? AND id = ? AND race_id = ? ORDER BY created_at DESC;");
-            PreparedStatement ps = null;
-
-            ps = con.prepareStatement(sql.toString());
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM profile_log WHERE region_id = ? AND id = ? AND race_id = ? ORDER BY created_at DESC");
             ps.setInt(1, regionId);
             ps.setInt(2, profileId);
             ps.setInt(3, raceId);
