@@ -24,12 +24,12 @@ public class Update {
         );
     }
 
-    @POST
+    @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String searchByDisplayName(
-            @FormParam("regionId")  int regionId,
-            @FormParam("profileId") int profileId,
-            @FormParam("raceId")    int raceId
+            @QueryParam("regionId")  int regionId,
+            @QueryParam("profileId") int profileId,
+            @QueryParam("raceId")    int raceId
     ) {
 
         try {
