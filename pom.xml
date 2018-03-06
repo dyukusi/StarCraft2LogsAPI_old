@@ -64,8 +64,6 @@
             <groupId>StarCraft2LogsClawler</groupId>
             <artifactId>StarCraft2LogsClawler</artifactId>
             <version>1.0-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>/etc/maven/lib/StarCraft2LogsClawler-1.0-SNAPSHOT.jar</systemPath>
         </dependency>
 
     </dependencies>
