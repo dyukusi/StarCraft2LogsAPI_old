@@ -50,6 +50,7 @@ public class Update {
             }
 
             int ladderId = result.getInt("ladder_id");
+            ps.close();
             con.close();
 
             // update

@@ -55,6 +55,9 @@ public class League {
 
         ResultSet result = ps.executeQuery();
 
+        ps.close();
+        con.close();
+
         return Util.createResponseJSONString(result);
     }
 }

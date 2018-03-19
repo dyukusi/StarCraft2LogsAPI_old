@@ -51,6 +51,10 @@ public class Search {
         System.out.println(ps.toString());
 
         ResultSet result = ps.executeQuery();
+
+        ps.close();
+        con.close();
+
         return Util.createResponseJSONString(result);
     }
 }
