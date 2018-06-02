@@ -39,14 +39,22 @@ public class Search {
         Connection con = this.db.connect();
         StringBuilder sql = new StringBuilder();
 
-        sql.append("SELECT DISTINCT * FROM profile_log WHERE region_id = ? AND name = ? AND race_id IN (?, ?) ORDER BY ABS(rating - ?) ASC, last_played_at DESC, created_at DESC LIMIT 10;");
+        // if rating specified less than 0, ignore it
+        if (rating >= 0) {
+            sql.append("SELECT DISTINCT * FROM profile_log WHERE region_id = ? AND name = ? AND race_id IN (?, ?) ORDER BY ABS(rating - ?) ASC, last_played_at DESC, created_at DESC LIMIT 10;");
+        } else {
+            sql.append("SELECT DISTINCT * FROM profile_log WHERE region_id = ? AND name = ? AND race_id IN (?, ?) ORDER BY last_played_at DESC, created_at DESC LIMIT 10;");
+        }
 
         PreparedStatement ps = con.prepareStatement(sql.toString());
         ps.setInt(1, Region.valueOf(region).getId());
         ps.setString(2, name);
         ps.setInt(3, Race.valueOf(race).getId());
         ps.setInt(4, Race.Null.getId());
-        ps.setInt(5, rating);
+
+        if (rating >= 0) {
+            ps.setInt(5, rating);
+        }
 
         System.out.println(ps.toString());
 
